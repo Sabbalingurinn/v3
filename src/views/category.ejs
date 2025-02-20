@@ -1,0 +1,51 @@
+<%- include('header') -%>
+
+<h1><%= categoryName %> Spurningar</h1>
+
+<% if (questions.length > 0) { %>
+  <ul>
+    <% for (const question of questions) { %>
+      <li>
+        <strong><%= question.question %></strong>
+        <ul>
+          <% for (const answer of question.answers) { %>
+            <li>
+              <button 
+                class="answer-button"
+                data-correct="<%= answer.correct %>"
+              >
+                <%= answer.answer %>
+              </button>
+            </li>
+          <% } %>
+        </ul>
+        <p class="result"></p>
+      </li>
+    <% } %>
+  </ul>
+<% } else { %>
+  <p>Engar spurningar fundust fyrir þennan flokk.</p>
+<% } %>
+
+<script>
+  // Bíðum eftir að DOM sé fullhlaðið áður en við bætum event listeners við
+  document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".answer-button");
+
+    buttons.forEach(button => {
+      button.addEventListener("click", function () {
+        const correct = this.getAttribute("data-correct") === "true";
+        const resultText = correct ? "Rétt svar!" : "Rangt svar!";
+
+        const questionElement = this.closest("li").parentElement.parentElement;
+        const resultElement = questionElement.querySelector(".result");
+
+        resultElement.textContent = resultText;
+        resultElement.style.fontWeight = "bold";
+        resultElement.style.color = correct ? "green" : "red";
+      });
+    });
+  });
+</script>
+
+<%- include('footer') -%>

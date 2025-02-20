@@ -1,0 +1,48 @@
+<%- include('header') -%>
+
+<h1>Búa til spurningu</h1>
+
+<form action="/form" method="POST" onsubmit="return validateForm()">
+  <!-- Input for New Category -->
+  <label for="categoryName">Flokkur:</label>
+  <input type="text" id="categoryName" name="categoryName" required>
+
+  <br><br>
+
+  <!-- Question Input -->
+  <label for="question">Spurning:</label>
+  <input type="text" id="question" name="question" required>
+
+  <br><br>
+
+  <!-- Answer Options with Checkboxes -->
+  <fieldset>
+    <legend>Svarmöguleikar</legend>
+
+    <% for (let i = 0; i < 4; i++) { %>
+      <div>
+        <input type="text" name="answers[<%= i %>][text]" placeholder="Svar <%= i + 1 %>" required>
+        <input type="checkbox" name="correctAnswer[]" value="<%= i %>"> Rétt svar?
+      </div>
+    <% } %>
+  </fieldset>
+
+  <br>
+
+  <button type="submit">Senda</button>
+</form>
+
+<script>
+  function validateForm() {
+    const checkboxes = document.querySelectorAll('input[name="correctAnswer[]"]:checked');
+
+    if (checkboxes.length < 1 || checkboxes.length > 3) {
+      alert("Veldu 1-3 rétt svör!");
+      return false;
+    }
+
+    return true;
+  }
+</script>
+
+<%- include('footer') -%>
