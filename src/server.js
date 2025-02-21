@@ -21,28 +21,33 @@ const viewsPath = path.join(__dirname, 'views');
 app.set('views', viewsPath);
 app.set('view engine', 'ejs');
 
+// Add default route
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
 app.use('/', router);
 
 // Veljum port með fallbak
-const DEFAULT_PORT = 3000;
-const port = process.env.PORT || DEFAULT_PORT;
+const PORT = process.env.PORT || 3000; // Use Render's assigned port or fallback to 3000
+const HOSTNAME = '0.0.0.0'; // Allow external connections
 
 // Búum til HTTP server manually svo við getum meðhöndlað villur
 const server = http.createServer(app);
 
-server.listen(port, () => {
-  console.log(`Server running at http://127.0.0.1:${port}/`);
+server.listen(PORT, HOSTNAME, () => {
+  console.log(`Server running at http://${HOSTNAME}:${PORT}/`);
 });
 
 // Meðhöndla villu ef port er upptekið og velja nýtt port
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.warn(`⚠️ Port ${port} is in use, trying a new port...`);
+    console.warn(`⚠️ Port ${PORT} is in use, trying a new port...`);
 
     // Veljum næsta lausa port (3001, 3002, ...)
-    server.listen(0, () => {
+    server.listen(0, HOSTNAME, () => {
       const newPort = server.address().port;
-      console.log(`Server running at http://127.0.0.1:${newPort}/`);
+      console.log(`Server running at http://${HOSTNAME}:${newPort}/`);
     });
   } else {
     console.error('Server error:', err);
