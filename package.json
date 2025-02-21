@@ -10,7 +10,7 @@
     "test": "node --test --experimental-test-module-mocks",
     "test:watch": "node --test --watch --experimental-test-module-mocks",
     "test:coverage": "node --test --experimental-test-coverage --experimental-test-module-mocks",
-    "start": "node src/server.js"
+    "start": "npm run setup && node src/server.js"
   },
   "keywords": [],
   "author": "",
