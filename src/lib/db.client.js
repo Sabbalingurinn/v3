@@ -101,3 +101,18 @@ export const query = async (sql, values = []) => {
   }
   return database.query(sql, values);
 };
+
+
+/**
+ * Fetch categories from the database.
+ * @returns {Promise<Array<{ id: number, name: string }>>}
+ */
+export async function getCategoriesFromDatabase() {
+  try {
+    const result = await query('SELECT * FROM categories');
+    return result?.rows || [];
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
